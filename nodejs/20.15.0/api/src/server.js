@@ -1,4 +1,5 @@
-const express = require('express');
-const app = express();
+const app = require('./app');
 
-app.listen(3001, () => console.log("Server is running!"));
+const PORT = 3001;
+
+app.listen(PORT, () => console.log("Server is running!"));
