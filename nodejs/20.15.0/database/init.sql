@@ -12,28 +12,28 @@ BEGIN
 END
 $$;
 
-CREATE TABLE CATEGORIE (
+CREATE TABLE CATEGORY (
     Pk UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
-    Categorie_Name VARCHAR(50) NOT NULL UNIQUE,
+    Category_Name VARCHAR(50) NOT NULL UNIQUE,
     Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     Updated_At TIMESTAMP DEFAULT NULL
 );
 
 CREATE TABLE SPECIFICATION (
     Pk UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
-    Fk_Categorie UUID NOT NULL,
+    Fk_Category UUID NOT NULL,
     Specification_Name VARCHAR(50) NOT NULL,
     Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     Updated_At TIMESTAMP NULL,
 
-    CONSTRAINT cnstnt_specification_fk_categorie 
-        FOREIGN KEY(Fk_Categorie) 
-        REFERENCES CATEGORIE(Pk)
+    CONSTRAINT cnstnt_specification_fk_category 
+        FOREIGN KEY(Fk_Category) 
+        REFERENCES CATEGORY(Pk)
 );
 
 CREATE TABLE PRODUCT (
     Pk UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
-    Fk_Categorie UUID NOT NULL,
+    Fk_Category UUID NOT NULL,
     Product_Name VARCHAR(50) NOT NULL,
     Product_Description VARCHAR(500) NOT NULL,
     Price DECIMAL(10,2) NOT NULL,
@@ -43,9 +43,9 @@ CREATE TABLE PRODUCT (
     Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     Updated_At TIMESTAMP NULL,
 
-    CONSTRAINT cnstnt_product_fk_categorie 
-        FOREIGN KEY(Fk_Categorie) 
-        REFERENCES CATEGORIE(Pk)
+    CONSTRAINT cnstnt_product_fk_category 
+        FOREIGN KEY(Fk_Category) 
+        REFERENCES CATEGORY(Pk)
 );
 
 CREATE TABLE SPECIFICATION_PRODUCT (
@@ -62,46 +62,46 @@ CREATE TABLE SPECIFICATION_PRODUCT (
         REFERENCES PRODUCT(Pk)
 );
 
-INSERT INTO categorie (categorie_name) VALUES ('cellphone');
-INSERT INTO categorie (categorie_name) VALUES ('air conditioning');
+INSERT INTO category (category_name) VALUES ('cellphone');
+INSERT INTO category (category_name) VALUES ('air conditioning');
 
-INSERT INTO specification (fk_categorie, specification_name) VALUES 
-((SELECT pk FROM categorie WHERE categorie_name = 'cellphone'), 'ram');
-INSERT INTO specification (fk_categorie, specification_name) VALUES 
-((SELECT pk FROM categorie WHERE categorie_name = 'cellphone'), 'storage');
+INSERT INTO specification (fk_category, specification_name) VALUES 
+((SELECT pk FROM category WHERE category_name = 'cellphone'), 'ram');
+INSERT INTO specification (fk_category, specification_name) VALUES 
+((SELECT pk FROM category WHERE category_name = 'cellphone'), 'storage');
 
-INSERT INTO specification (fk_categorie, specification_name) VALUES 
-((SELECT pk FROM categorie WHERE categorie_name = 'air conditioning'), 'btu/h');
-INSERT INTO specification (fk_categorie, specification_name) VALUES 
-((SELECT pk FROM categorie WHERE categorie_name = 'air conditioning'), 'voltage');
+INSERT INTO specification (fk_category, specification_name) VALUES 
+((SELECT pk FROM category WHERE category_name = 'air conditioning'), 'btu/h');
+INSERT INTO specification (fk_category, specification_name) VALUES 
+((SELECT pk FROM category WHERE category_name = 'air conditioning'), 'voltage');
 
-INSERT INTO product (fk_categorie, product_name, product_description, price, is_new, brand, product_location) VALUES 
-((SELECT pk FROM categorie WHERE categorie_name = 'cellphone'), 'Iphone 16', '', 5999.00, true, 'Apple', 'São Paulo');
+INSERT INTO product (fk_category, product_name, product_description, price, is_new, brand, product_location) VALUES 
+((SELECT pk FROM category WHERE category_name = 'cellphone'), 'Iphone 16', '', 5999.00, true, 'Apple', 'São Paulo');
 INSERT INTO specification_product (fk_specification, fk_product, specification_value) VALUES 
 (
-    (SELECT pk FROM specification WHERE specification_name = 'ram' AND fk_categorie = (SELECT pk FROM categorie WHERE categorie_name = 'cellphone')),
+    (SELECT pk FROM specification WHERE specification_name = 'ram' AND fk_category = (SELECT pk FROM category WHERE category_name = 'cellphone')),
     (SELECT pk FROM product ORDER BY created_at DESC LIMIT 1),
     '16GB'
 );
 INSERT INTO specification_product (fk_specification, fk_product, specification_value) VALUES 
 (
-    (SELECT pk FROM specification WHERE specification_name = 'storage' AND fk_categorie = (SELECT pk FROM categorie WHERE categorie_name = 'cellphone')),
+    (SELECT pk FROM specification WHERE specification_name = 'storage' AND fk_category = (SELECT pk FROM category WHERE category_name = 'cellphone')),
     (SELECT pk FROM product ORDER BY created_at DESC LIMIT 1),
     '256GB'
 );
 
 
-INSERT INTO product (fk_categorie, product_name, product_description, price, is_new, brand, product_location) VALUES 
-((SELECT pk FROM categorie WHERE categorie_name = 'air conditioning'), 'Ar-Condicionado LG Dual Inverter', '', 2599.00, true, 'LG', 'São Paulo');
+INSERT INTO product (fk_category, product_name, product_description, price, is_new, brand, product_location) VALUES 
+((SELECT pk FROM category WHERE category_name = 'air conditioning'), 'Ar-Condicionado LG Dual Inverter', '', 2599.00, true, 'LG', 'São Paulo');
 INSERT INTO specification_product (fk_specification, fk_product, specification_value) VALUES 
 (
-    (SELECT pk FROM specification WHERE specification_name = 'btu/h' AND fk_categorie = (SELECT pk FROM categorie WHERE categorie_name = 'air conditioning')),
+    (SELECT pk FROM specification WHERE specification_name = 'btu/h' AND fk_category = (SELECT pk FROM category WHERE category_name = 'air conditioning')),
     (SELECT pk FROM product ORDER BY created_at DESC LIMIT 1),
     '12.000'
 );
 INSERT INTO specification_product (fk_specification, fk_product, specification_value) VALUES 
 (
-    (SELECT pk FROM specification WHERE specification_name = 'voltage' AND fk_categorie = (SELECT pk FROM categorie WHERE categorie_name = 'air conditioning')),
+    (SELECT pk FROM specification WHERE specification_name = 'voltage' AND fk_category = (SELECT pk FROM category WHERE category_name = 'air conditioning')),
     (SELECT pk FROM product ORDER BY created_at DESC LIMIT 1),
     '220V'
 );
