@@ -1,4 +1,6 @@
 const database = require('../database/database_connection');
+const categoryRepository = require('./CategoryRepository');
+const specificationProductRepository = require('./SpecificationProductRepository');
 
 class ProductRepository {
 
@@ -6,8 +8,8 @@ class ProductRepository {
         const result = await database.query(
             `SELECT tb_prod.pk, tb_prod.product_name, tb_prod.price 
             FROM product tb_prod
-            INNER JOIN categorie tb_categ
-            ON tb_prod.fk_categorie = tb_categ.pk
+            INNER JOIN category tb_categ
+            ON tb_prod.fk_category = tb_categ.pk
             INNER JOIN specification_product tb_spec_prod
             ON tb_prod.pk = tb_spec_prod.fk_product
             INNER JOIN specification tb_spec
@@ -24,6 +26,38 @@ class ProductRepository {
         );
 
         return result.rows;
+    }
+
+    async findDetail(productPk) {
+        const productResult = await database.query(
+            `SELECT *
+            FROM product tb_prod
+            WHERE tb_prod.pk = $1`, 
+            [productPk]
+        );
+
+        const categoryResult = await categoryRepository.findOne(productResult.rows[0]['fk_category']);
+
+        const specificationsProductResult = await specificationProductRepository.findAll(productResult.rows[0]['pk']);
+
+        const result = {
+            pk_product: productResult.rows[0]['pk'],
+            product_name: productResult.rows[0]['product_name'],
+            product_description: productResult.rows[0]['product_description'],
+            price: productResult.rows[0]['price'],
+            is_new: productResult.rows[0]['is_new'],
+            brand: productResult.rows[0]['brand'],
+            product_location: productResult.rows[0]['product_location'],
+            created_at: productResult.rows[0]['created_at'],
+            updated_at: productResult.rows[0]['updated_at'],
+            category: {
+                pk_category: categoryResult.pk,
+                category_name: categoryResult.category_name
+            },
+            specifications: specificationsProductResult
+        };
+
+        return result;
     }
 }
   

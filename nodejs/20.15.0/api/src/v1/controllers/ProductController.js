@@ -20,4 +20,16 @@ router.get(prefix, async (req, res) => {
     });
 });
 
+router.get(prefix + '/:pk/detail/', async (req, res) => {
+
+    const productPk = req.params.pk;
+
+    const productDetail = await productRepository.findDetail(productPk);
+
+    res.status(200).json({ 
+        message: 'success',
+        data: productDetail
+    });
+});
+
 module.exports = router;
