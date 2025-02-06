@@ -12,6 +12,7 @@ BEGIN
 END
 $$;
 
+-- create tables 
 CREATE TABLE CATEGORY (
     Pk UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
     Category_Name VARCHAR(50) NOT NULL UNIQUE,
@@ -62,6 +63,16 @@ CREATE TABLE SPECIFICATION_PRODUCT (
         REFERENCES PRODUCT(Pk)
 );
 
+CREATE TABLE ACCOUNT (
+    Pk UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+    User_Name VARCHAR(50) NOT NULL UNIQUE,
+    Email VARCHAR(50) NOT NULL UNIQUE,
+    Account_Password VARCHAR(50) NOT NULL,
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Updated_At TIMESTAMP DEFAULT NULL
+);
+
+-- initialize database
 INSERT INTO category (category_name) VALUES ('cellphone');
 INSERT INTO category (category_name) VALUES ('air conditioning');
 
