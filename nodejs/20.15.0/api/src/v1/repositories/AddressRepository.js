@@ -9,6 +9,18 @@ class AddressRepository {
             [pk_account, street, city, state, postal_code ]
         );
     }
+
+    async find(fk_account, pk = null) {
+
+        const result = await database.query(
+            `SELECT * FROM address 
+            WHERE (fk_account = $1 OR $1 IS NULL) 
+            AND (pk = $2 OR $2 IS NULL)`, 
+            [fk_account, pk]
+        );
+
+        return result.rows;
+    }
 }
   
 module.exports = new AddressRepository();

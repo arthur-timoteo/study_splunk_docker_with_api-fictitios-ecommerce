@@ -16,4 +16,18 @@ router.post(prefix, async (req, res) => {
     });
 });
 
+router.get(prefix, async (req, res) => {
+
+    const pk_account = req.headers['authorization'];
+    const pk_address = req.query.pk;
+
+    const addresses = await addressRepository.find(pk_account, pk_address);
+
+    res.status(200).json({ 
+        message: 'success',
+        count: addresses.length,
+        data: addresses
+    });
+}); 
+
 module.exports = router;
