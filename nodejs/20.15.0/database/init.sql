@@ -87,6 +87,38 @@ CREATE TABLE ADDRESS (
         REFERENCES ACCOUNT(Pk)
 );
 
+CREATE TABLE PURCHASE (
+    Pk UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+    Fk_Account UUID NOT NULL,
+    Fk_Address UUID NOT NULL,
+    Total_Amount DECIMAL(10, 2) NOT NULL,
+    Status SMALLINT NOT NULL,
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Updated_At TIMESTAMP DEFAULT NULL,
+
+    CONSTRAINT cnstnt_purchase_fk_account 
+        FOREIGN KEY(Fk_Account) 
+        REFERENCES ACCOUNT(Pk),
+    CONSTRAINT cnstnt_purchase_fk_address 
+        FOREIGN KEY(Fk_Address) 
+        REFERENCES ADDRESS(Pk)
+);
+
+CREATE TABLE PURCHASE_ITEM (
+    Pk UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+    Fk_Purchase UUID NOT NULL,
+    Fk_Product UUID NOT NULL,
+    Quantity SMALLINT NOT NULL,
+    Price DECIMAL(10, 2) NOT NULL,
+
+    CONSTRAINT cnstnt_purchase_item_fk_order 
+        FOREIGN KEY(Fk_Purchase) 
+        REFERENCES PURCHASE(Pk),
+    CONSTRAINT cnstnt_purchase_item_fk_product 
+        FOREIGN KEY(Fk_Product) 
+        REFERENCES PRODUCT(Pk)
+);
+
 -- initialize database
 INSERT INTO category (category_name) VALUES ('cellphone');
 INSERT INTO category (category_name) VALUES ('air conditioning');
