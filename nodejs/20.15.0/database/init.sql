@@ -72,6 +72,21 @@ CREATE TABLE ACCOUNT (
     Updated_At TIMESTAMP DEFAULT NULL
 );
 
+CREATE TABLE ADDRESS (
+    Pk UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+    Fk_Account UUID NOT NULL,
+    Street VARCHAR(250) NOT NULL,
+    City VARCHAR(100) NOT NULL,
+    State VARCHAR(100) NOT NULL,
+    Postal_Code VARCHAR(20) NOT NULL,
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Updated_At TIMESTAMP DEFAULT NULL,
+
+    CONSTRAINT cnstnt_address_fk_account 
+        FOREIGN KEY(Fk_Account) 
+        REFERENCES ACCOUNT(Pk)
+);
+
 -- initialize database
 INSERT INTO category (category_name) VALUES ('cellphone');
 INSERT INTO category (category_name) VALUES ('air conditioning');
