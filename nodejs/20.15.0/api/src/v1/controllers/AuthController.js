@@ -8,10 +8,23 @@ router.post(prefix + '/register', async (req, res) => {
 
     const { name, email, password } = req.body;
 
+    const existingAccount = await accountRepository.findOne(null, email, null);
+
+    if (existingAccount) {
+        return res.status(400).json({ 
+            message: 'error to try register account'
+        });
+    }
+
     await accountRepository.create(name, email, password);
 
+    const { pk } = await accountRepository.findOne(null, email, null);
+
     res.status(201).json({ 
-        message: 'success'
+        message: 'success',
+        data: {
+            account_pk: pk
+        }
     });
 });
 
@@ -24,7 +37,7 @@ router.post(prefix + '/login', async (req, res) => {
     res.status(200).json({ 
         message: 'success',
         data: {
-            user_key: account.pk
+            account_pk: account.pk
         }
     });
 });
