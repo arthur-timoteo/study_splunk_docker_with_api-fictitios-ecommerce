@@ -4,7 +4,7 @@ const specificationProductRepository = require('./SpecificationProductRepository
 
 class ProductRepository {
 
-    async find(filter) {
+    async find(product_name, min_price, max_price, is_new, brand, product_location, count) {
         const result = await database.query(
             `SELECT tb_prod.pk, tb_prod.product_name, tb_prod.price 
             FROM product tb_prod
@@ -22,7 +22,7 @@ class ProductRepository {
             AND (tb_prod.product_location = $6 OR $6 IS NULL)
             GROUP BY tb_prod.pk, tb_prod.product_name, tb_prod.price
             LIMIT $7`, 
-            [filter.product_name, filter.min_price, filter.max_price, filter.is_new, filter.brand, filter.product_location, filter.count]
+            [product_name, min_price, max_price, is_new, brand, product_location, count]
         );
 
         return result.rows;
