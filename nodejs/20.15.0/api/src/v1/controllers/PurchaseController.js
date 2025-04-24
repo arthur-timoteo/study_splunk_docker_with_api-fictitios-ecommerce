@@ -26,4 +26,16 @@ router.post(prefix, async (req, res) => {
     });
 });
 
+router.get(prefix, async (req, res) => {
+
+    const account_pk = req.headers['authorization'];
+    const purchase_list = await purchaseRepository.find(null, account_pk, null, null, null);
+
+    res.status(200).json({ 
+        message: 'success',
+        count: purchase_list.length,
+        data: purchase_list
+    });
+});
+
 module.exports = router;
