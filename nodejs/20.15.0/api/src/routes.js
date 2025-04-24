@@ -5,6 +5,7 @@ const productController = require('./v1/controllers/ProductController');
 const authController = require('./v1/controllers/AuthController');
 const addressController = require('./v1/controllers/AddressController');
 const purchaseController = require('./v1/controllers/PurchaseController');
+const accountController = require('./v1/controllers/AccountController');
 
 const router = express.Router();
 
@@ -13,5 +14,6 @@ router.use(productController);
 router.use(authController);
 router.use(addressController);
 router.use(purchaseController);
+router.use(accountController);
 
 module.exports = router;

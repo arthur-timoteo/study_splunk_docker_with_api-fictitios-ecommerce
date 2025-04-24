@@ -9,15 +9,16 @@ class AccountRepository {
         );
     }
 
-    async findOne(name = null, email = null, password = null) {
+    async findOne(pk = null, name = null, email = null, password = null) {
 
         const result = await database.query(
             `SELECT * FROM account 
-            WHERE (user_name = $1 OR $1 IS NULL) 
-            AND (email = $2 OR $2 IS NULL)
-            AND (account_password = $3 OR $3 IS NULL) 
+            WHERE (pk = $1 OR $1 IS NULL) 
+            AND (user_name = $2 OR $2 IS NULL)
+            AND (email = $3 OR $3 IS NULL)
+            AND (account_password = $4 OR $4 IS NULL) 
             LIMIT 1`, 
-            [name, email, password]
+            [pk, name, email, password]
         );
 
         return result.rows[0];
