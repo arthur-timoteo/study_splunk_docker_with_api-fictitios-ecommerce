@@ -16,10 +16,13 @@ router.post(prefix, async (req, res) => {
         total_amount += parseFloat(product.price);
     }
 
-    await purchaseRepository.create(account_pk, address_pk, total_amount);
+    const purchase_pk = await purchaseRepository.create(account_pk, address_pk, total_amount);
 
     res.status(201).json({ 
-        message: 'success'
+        message: 'success',
+        data: {
+            pk: purchase_pk,
+        }
     });
 });
 
