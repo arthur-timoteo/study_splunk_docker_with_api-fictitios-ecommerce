@@ -1,5 +1,6 @@
 const express = require('express');
 const purchaseRepository = require('../repositories/PurchaseRepository');
+const purchaseItemRepository = require('../repositories/PurchaseItemRepository');
 const productRepository = require('../repositories/ProductRepository');
 const router = express.Router();
 
@@ -13,10 +14,15 @@ router.post(prefix, async (req, res) => {
 
     for(let i = 0; i < itens.length; i++){
         const product = await productRepository.findDetail(itens[i].product_pk);
-        total_amount += parseFloat(product.price);
+        total_amount += parseFloat(product.price) * itens[i].quantity;
+        itens[i].price = parseFloat(product.price);
     }
 
     const purchase_pk = await purchaseRepository.create(account_pk, address_pk, total_amount);
+
+    for(let i = 0; i < itens.length; i++){
+        await purchaseItemRepository.create(purchase_pk, itens[i].product_pk, itens[i].quantity, itens[i].price);
+    }
 
     res.status(201).json({ 
         message: 'success',
