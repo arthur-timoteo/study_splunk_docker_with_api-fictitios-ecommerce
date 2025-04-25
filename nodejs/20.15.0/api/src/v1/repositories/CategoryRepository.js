@@ -3,13 +3,10 @@ const database = require('../database/database_connection');
 class CategoryRepository {
 
     async find(name = null) {
+        let query = 'SELECT * FROM category WHERE category_name LIKE $1';
+        let values = [`%${name}%`];
 
-        const result = await database.query(
-            `SELECT * 
-            FROM category
-            WHERE (category_name = $1 OR $1 IS NULL)`, 
-            [name]
-        );
+        const result = await database.query(query, values);
 
         return result.rows;
     }
