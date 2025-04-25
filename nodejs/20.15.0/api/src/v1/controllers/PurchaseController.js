@@ -50,6 +50,13 @@ router.get(prefix + '/:pk', async (req, res) => {
     const account_pk = req.headers['authorization'];
 
     const purchase = await purchaseRepository.find(purchase_pk, account_pk, null, null, null);
+
+    if(purchase.length == 0) {
+        return res.status(400).json({ 
+            message: 'error to try get info purchase'
+        });
+    }
+
     const purchase_itens = await purchaseItemRepository.find(null, purchase.pk, null, null, null);
 
     res.status(200).json({ 
