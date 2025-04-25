@@ -6,6 +6,7 @@ const authController = require('./v1/controllers/AuthController');
 const addressController = require('./v1/controllers/AddressController');
 const purchaseController = require('./v1/controllers/PurchaseController');
 const accountController = require('./v1/controllers/AccountController');
+const categoryController = require('./v1/controllers/CategoryController');
 
 const router = express.Router();
 
@@ -15,5 +16,6 @@ router.use(authController);
 router.use(addressController);
 router.use(purchaseController);
 router.use(accountController);
+router.use(categoryController);
 
 module.exports = router;
