@@ -1,5 +1,6 @@
 const express = require('express');
 const addressRepository = require('../repositories/AddressRepository');
+const purchaseRepository = require('../repositories/PurchaseRepository');
 const router = express.Router();
 
 const prefix = "/api/v1/address";
@@ -32,6 +33,26 @@ router.post(prefix, async (req, res) => {
         data: {
             address_pk: address.pk
         }
+    });
+});
+
+router.delete(prefix + '/:pk', async (req, res) => {
+
+    const address_pk = req.params.pk;
+    const account_pk = req.headers['authorization'];
+
+    const address = await purchaseRepository.find(null, account_pk, address_pk, null, null);
+
+    if(address.length > 0) {
+        return res.status(400).json({ 
+            message: 'error to try delete address'
+        });
+    }
+
+    await addressRepository.delete(address_pk, account_pk);
+
+    res.status(200).json({ 
+        message: 'success'
     });
 });
 

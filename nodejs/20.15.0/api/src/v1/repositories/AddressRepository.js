@@ -25,6 +25,13 @@ class AddressRepository {
 
         return result.rows;
     }
+
+    async delete(pk, account_fk) {
+        await database.query(
+            `DELETE FROM address WHERE pk = $1 AND fk_account = $2`, 
+            [pk, account_fk]
+        );
+    }
 }
   
 module.exports = new AddressRepository();
