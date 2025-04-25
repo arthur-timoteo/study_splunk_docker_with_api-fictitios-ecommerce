@@ -23,6 +23,19 @@ class AccountRepository {
 
         return result.rows[0];
     }
+
+    async updateOne(pk, name = null, email = null) {
+
+        await database.query(
+            `UPDATE account
+            SET 
+                user_name = COALESCE($2, user_name),
+                email = COALESCE($3, email),
+                updated_at = NOW() 
+            WHERE pk = $1`, 
+            [pk, name, email]
+        );
+    }
 }
   
 module.exports = new AccountRepository();
