@@ -43,7 +43,7 @@ router.delete(prefix + '/:pk', async (req, res) => {
 
     const address = await purchaseRepository.find(null, account_pk, address_pk, null, null);
 
-    if(address.length > 0) {
+    if(address.length == 0) {
         return res.status(400).json({ 
             message: 'error to try delete address'
         });
