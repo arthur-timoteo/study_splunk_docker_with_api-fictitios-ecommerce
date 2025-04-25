@@ -44,4 +44,26 @@ router.get(prefix, async (req, res) => {
     });
 });
 
+router.get(prefix + '/:pk', async (req, res) => {
+
+    const purchase_pk = req.params.pk;
+    const account_pk = req.headers['authorization'];
+
+    const purchase = await purchaseRepository.find(purchase_pk, account_pk, null, null, null);
+    const purchase_itens = await purchaseItemRepository.find(null, purchase.pk, null, null, null);
+
+    res.status(200).json({ 
+        message: 'success',
+        data: {
+            ...purchase[0],
+            purchase_itens: purchase_itens.map(item => ({
+                purchase_item_pk: item.pk,
+                fk_product: item.fk_product,
+                quantity: item.quantity,
+                price: parseFloat(item.price),
+            }))
+        }
+    });
+});
+
 module.exports = router;
