@@ -8,7 +8,7 @@ router.get(prefix, async (req, res) => {
 
     const { name, min_price, max_price, is_new, brand, location, specifications, count } = req.query;
 
-    const products = await productRepository.find(name, min_price, max_price, is_new, brand, location, specifications, count );
+    const products = await productRepository.find(name, min_price, max_price, is_new, brand, location, specifications, count);
 
     res.status(200).json({ 
         message: 'success',
@@ -19,13 +19,13 @@ router.get(prefix, async (req, res) => {
 
 router.get(prefix + '/:pk/detail/', async (req, res) => {
 
-    const productPk = req.params.pk;
+    const product_pk = req.params.pk;
 
-    const productDetail = await productRepository.findDetail(productPk);
+    const product_detail = await productRepository.findDetail(product_pk);
 
     res.status(200).json({ 
         message: 'success',
-        data: productDetail
+        data: product_detail
     });
 });
 
