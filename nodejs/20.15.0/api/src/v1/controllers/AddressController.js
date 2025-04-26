@@ -26,7 +26,7 @@ router.post(prefix, async (req, res) => {
 
     await addressRepository.create(account_pk, street, city, state, postal_code);
 
-    const address = await addressRepository.find(null, account_pk, street, city, state, postal_code);
+    const address = await addressRepository.findOne(null, account_pk, street, city, state, postal_code, 'created_at', 'DESC');
 
     res.status(201).json({ 
         message: 'success',
