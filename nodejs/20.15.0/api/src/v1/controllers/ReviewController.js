@@ -30,4 +30,19 @@ router.post(prefix, async (req, res) => {
     });
 });
 
+router.get(prefix, async (req, res) => {
+
+    const product_pk = req.params.pk;
+
+    const reviews = await reviewRepository.find(product_pk, null, null, null);
+
+    res.status(200).json({ 
+        message: 'success',
+        data: {
+            count: reviews.length,
+            reviews: reviews
+        }
+    });
+});
+
 module.exports = router;
