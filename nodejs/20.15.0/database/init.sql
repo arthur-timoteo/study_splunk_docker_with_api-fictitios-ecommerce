@@ -119,6 +119,22 @@ CREATE TABLE PURCHASE_ITEM (
         REFERENCES PRODUCT(Pk)
 );
 
+CREATE TABLE REVIEW (
+    Pk UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+    Fk_Product UUID NOT NULL,
+    Fk_Account UUID NOT NULL,
+    Rating SMALLSERIAL NOT NULL,
+    Review_comment VARCHAR(500) NULL,
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT cnstnt_review_fk_product 
+        FOREIGN KEY(Fk_Product) 
+        REFERENCES PRODUCT(Pk),
+    CONSTRAINT cnstnt_review_fk_account 
+        FOREIGN KEY(Fk_Account) 
+        REFERENCES ACCOUNT(Pk)
+);
+
 -- initialize database
 INSERT INTO category (category_name) VALUES ('cellphone');
 INSERT INTO category (category_name) VALUES ('air conditioning');
