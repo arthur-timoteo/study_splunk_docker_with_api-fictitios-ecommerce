@@ -8,6 +8,12 @@ router.post(prefix + '/login', async (req, res) => {
 
     const { email, password } = req.body;
 
+    if (!email || !password) {
+        return res.status(400).json({ 
+            message: 'error to try login'
+        });
+    }
+
     const account = await accountRepository.findOne(null, null, email, password);
 
     res.status(200).json({ 

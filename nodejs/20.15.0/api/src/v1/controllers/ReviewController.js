@@ -10,6 +10,18 @@ router.post(prefix, async (req, res) => {
     const account_pk = req.headers['authorization'];
     const { rating, review_comment } = req.body;
 
+    if (!account_pk) {
+        return res.status(403).json({ 
+            message: 'Request denied'
+        });
+    }
+
+    if (!rating || !review_comment) {
+        return res.status(400).json({ 
+            message: 'error to try register review'
+        });
+    }
+
     const review_this_product_account_exists = await reviewRepository.find(product_pk, account_pk, rating, review_comment);
 
     if(review_this_product_account_exists.length != 0) {

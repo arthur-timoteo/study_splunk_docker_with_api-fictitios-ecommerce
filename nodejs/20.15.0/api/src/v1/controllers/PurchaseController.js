@@ -12,6 +12,18 @@ router.post(prefix, async (req, res) => {
     const { address_pk, itens } = req.body;
     let total_amount = 0;
 
+    if (!account_pk) {
+        return res.status(403).json({ 
+            message: 'Request denied'
+        });
+    }
+
+    if (!address_pk || !itens ) {
+        return res.status(400).json({ 
+            message: 'error to try register purchase'
+        });
+    }
+
     for(let i = 0; i < itens.length; i++){
         const product = await productRepository.findDetail(itens[i].product_pk);
         total_amount += parseFloat(product.price) * itens[i].quantity;
@@ -35,6 +47,13 @@ router.post(prefix, async (req, res) => {
 router.get(prefix, async (req, res) => {
 
     const account_pk = req.headers['authorization'];
+
+    if (!account_pk) {
+        return res.status(403).json({ 
+            message: 'Request denied'
+        });
+    }
+
     const purchase_list = await purchaseRepository.find(null, account_pk, null, null, null);
 
     res.status(200).json({ 
@@ -48,6 +67,12 @@ router.get(prefix + '/:pk', async (req, res) => {
 
     const purchase_pk = req.params.pk;
     const account_pk = req.headers['authorization'];
+
+    if (!account_pk) {
+        return res.status(403).json({ 
+            message: 'Request denied'
+        });
+    }
 
     const purchase = await purchaseRepository.find(purchase_pk, account_pk, null, null, null);
 

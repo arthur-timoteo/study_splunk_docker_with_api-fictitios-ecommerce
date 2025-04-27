@@ -8,6 +8,12 @@ router.post(prefix, async (req, res) => {
 
     const { name, email, password } = req.body;
 
+    if (!name || !email || !password) {
+        return res.status(400).json({ 
+            message: 'error to try register account'
+        });
+    }
+
     const existingAccount = await accountRepository.findOne(null, null, email, null);
 
     if (existingAccount) {
@@ -32,6 +38,12 @@ router.get(prefix, async (req, res) => {
 
     const account_pk = req.headers['authorization'];
 
+    if (!account_pk) {
+        return res.status(403).json({ 
+            message: 'Request denied'
+        });
+    }
+
     const account = await accountRepository.findOne(account_pk, null, null, null);
 
     res.status(200).json({ 
@@ -50,6 +62,18 @@ router.put(prefix, async (req, res) => {
 
     const account_pk = req.headers['authorization'];
     const { name, email } = req.body;
+
+    if (!account_pk) {
+        return res.status(403).json({ 
+            message: 'Request denied'
+        });
+    }
+
+    if (!name || !email) {
+        return res.status(400).json({ 
+            message: 'error to try register account'
+        });
+    }
 
     await accountRepository.updateOne(account_pk, name, email);
 
