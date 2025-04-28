@@ -15,7 +15,7 @@ const router = express.Router();
  *         required: false
  *         schema:
  *           type: string
- *         description: address identifier
+ *         description: category name
  *     responses:
  *       200:
  *         description: success
