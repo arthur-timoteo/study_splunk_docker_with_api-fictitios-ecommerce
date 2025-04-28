@@ -2,10 +2,43 @@ const express = require('express');
 const reviewRepository = require('../repositories/ReviewRepository');
 const router = express.Router();
 
-const prefix = "/api/v1/product/:pk/review/";
-
-router.post(prefix, async (req, res) => {
-
+/**
+ * @swagger
+ * /api/v1/product/{pk}/review:
+ *   post:
+ *     tags:
+ *       - Review
+ *     summary: Add
+ *     parameters:
+ *       - in: path
+ *         name: pk
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: product identifier 
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               rating:
+ *                 type: number
+ *               review_comment:
+ *                 type: string 
+ *     security:
+ *       - AccountPk: [] 
+ *     responses:
+ *       201:
+ *         description: success
+ *       400:
+ *         description: error to try register review
+ *       403:
+ *         description: Request denied
+ */
+router.post('/:pk/review', async (req, res) => {
+console.log(req);
     const product_pk = req.params.pk;
     const account_pk = req.headers['authorization'];
     const { rating, review_comment } = req.body;
@@ -16,7 +49,7 @@ router.post(prefix, async (req, res) => {
         });
     }
 
-    if (!rating || !review_comment) {
+    if (!rating) {
         return res.status(400).json({ 
             message: 'error to try register review'
         });
@@ -42,7 +75,25 @@ router.post(prefix, async (req, res) => {
     });
 });
 
-router.get(prefix, async (req, res) => {
+/**
+ * @swagger
+ * /api/v1/product/{pk}/review:
+ *   get:
+ *     tags:
+ *      - Review
+ *     summary: List
+ *     parameters:
+ *       - in: path
+ *         name: pk
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: product identifier
+ *     responses:
+ *       200:
+ *         description: success
+ */
+router.get('/:pk/review', async (req, res) => {
 
     const product_pk = req.params.pk;
 

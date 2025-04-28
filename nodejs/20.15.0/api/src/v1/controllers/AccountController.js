@@ -2,9 +2,33 @@ const express = require('express');
 const accountRepository = require('../repositories/AccountRepository');
 const router = express.Router();
 
-const prefix = "/api/v1/account";
-
-router.post(prefix, async (req, res) => {
+/**
+ * @swagger
+ * /api/v1/account:
+ *   post:
+ *     tags:
+ *      - Account
+ *     summary: Register account
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: success
+ *       400:
+ *         description: error to try register account
+ */
+router.post('/', async (req, res) => {
 
     const { name, email, password } = req.body;
 
@@ -34,7 +58,22 @@ router.post(prefix, async (req, res) => {
     });
 });
 
-router.get(prefix, async (req, res) => {
+/**
+ * @swagger
+ * /api/v1/account:
+ *   get:
+ *     tags:
+ *      - Account
+ *     summary: Detail
+ *     security:
+ *       - AccountPk: []
+ *     responses:
+ *       200:
+ *         description: success
+ *       403:
+ *         description: Request denied
+ */
+router.get('/', async (req, res) => {
 
     const account_pk = req.headers['authorization'];
 
@@ -58,7 +97,33 @@ router.get(prefix, async (req, res) => {
     });
 }); 
 
-router.put(prefix, async (req, res) => {
+/**
+ * @swagger
+ * /api/v1/account:
+ *   put:
+ *     tags:
+ *      - Account
+ *     summary: Edit
+ *     security:
+ *       - AccountPk: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: success
+ *       403:
+ *         description: Request denied
+ */
+router.put('/', async (req, res) => {
 
     const account_pk = req.headers['authorization'];
     const { name, email } = req.body;
@@ -69,9 +134,9 @@ router.put(prefix, async (req, res) => {
         });
     }
 
-    if (!name || !email) {
+    if (!name && !email) {
         return res.status(400).json({ 
-            message: 'error to try register account'
+            message: 'error to try edit account'
         });
     }
 

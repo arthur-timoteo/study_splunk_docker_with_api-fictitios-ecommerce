@@ -3,9 +3,61 @@ const productRepository = require('../repositories/ProductRepository');
 const reviewRepository = require('../repositories/ReviewRepository');
 const router = express.Router();
 
-const prefix = "/api/v1/product";
-
-router.get(prefix, async (req, res) => {
+/**
+ * @swagger
+ * /api/v1/product:
+ *   get:
+ *     tags:
+ *      - Product
+ *     summary: List
+ *     parameters:
+ *       - in: query
+ *         name: name
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: product name
+ *       - in: query
+ *         name: min_price
+ *         required: false
+ *         schema:
+ *           type: number
+ *         description: minimum price
+ *       - in: query
+ *         name: is_new
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: is product new
+ *       - in: query
+ *         name: brand
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: product brand
+ *       - in: query
+ *         name: location
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: product location
+ *       - in: query
+ *         name: name
+ *         required: false
+ *         schema:
+ *           type: array
+ *         description: specifications
+ *       - in: query
+ *         name: count
+ *         required: false
+ *         schema:
+ *           type: number
+ *         description: quantity of products
+ *     responses:
+ *       200:
+ *         description: success
+ */
+router.get('/', async (req, res) => {
 
     const { name, min_price, max_price, is_new, brand, location, specifications, count } = req.query;
 
@@ -18,7 +70,25 @@ router.get(prefix, async (req, res) => {
     });
 });
 
-router.get(prefix + '/:pk/detail/', async (req, res) => {
+/**
+ * @swagger
+ * /api/v1/product/{pk}/detail:
+ *   get:
+ *     tags:
+ *       - Product
+ *     summary: Detail
+ *     parameters:
+ *       - in: path
+ *         name: pk
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: product identifier
+ *     responses:
+ *       200:
+ *         description: success
+ */
+router.get('/:pk/detail/', async (req, res) => {
 
     const product_pk = req.params.pk;
 

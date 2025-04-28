@@ -15,13 +15,13 @@ const reviewController = require('./v1/controllers/ReviewController');
 const router = express.Router();
 
 // v1
-router.use(productController);
-router.use(authController);
-router.use(addressController);
-router.use(purchaseController);
-router.use(accountController);
-router.use(categoryController);
-router.use(reviewController);
+router.use('/api/v1/product', productController);
+router.use('/api/v1/auth/login', authController);
+router.use('/api/v1/address', addressController);
+router.use('/api/v1/purchase', purchaseController);
+router.use('/api/v1/account', accountController);
+router.use('/api/v1/product/category', categoryController);
+router.use('/api/v1/product', reviewController);
 
 // Swagger basic setup
 const options = {
@@ -30,6 +30,15 @@ const options = {
     info: {
       title: 'API E-COMMERCE',
       version: '1.0.0',
+    },
+    components: {
+      securitySchemes: {
+        AccountPk: {
+          type: 'apiKey',
+          name: 'Authorization',
+          in: 'header',
+        },
+      },
     },
   },
     apis: [path.resolve(__dirname, './v1/controllers/*.js')], // caminhos dos arquivos onde estão suas rotas/documentações

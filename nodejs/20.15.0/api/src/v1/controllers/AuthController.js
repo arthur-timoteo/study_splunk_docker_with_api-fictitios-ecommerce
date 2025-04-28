@@ -2,9 +2,31 @@ const express = require('express');
 const accountRepository = require('../repositories/AccountRepository');
 const router = express.Router();
 
-const prefix = "/api/v1/auth";
-
-router.post(prefix + '/login', async (req, res) => {
+/**
+ * @swagger
+ * /api/v1/auth/login:
+ *   post:
+ *     tags:
+ *       - Auth
+ *     summary: Login
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: success
+ *       400:
+ *         description: error to try login
+ */
+router.post('/', async (req, res) => {
 
     const { email, password } = req.body;
 

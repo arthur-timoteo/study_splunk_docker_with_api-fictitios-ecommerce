@@ -4,9 +4,43 @@ const purchaseItemRepository = require('../repositories/PurchaseItemRepository')
 const productRepository = require('../repositories/ProductRepository');
 const router = express.Router();
 
-const prefix = "/api/v1/purchase";
-
-router.post(prefix, async (req, res) => {
+/**
+ * @swagger
+ * /api/v1/purchase:
+ *   post:
+ *     tags:
+ *       - Purchase
+ *     summary: Add
+ *     security:
+ *       - AccountPk: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               address_pk:
+ *                 type: string
+ *               itens:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     product_pk:
+ *                       type: string
+ *                     quantity:
+ *                       type: number
+ *                 minItems: 1   
+ *     responses:
+ *       201:
+ *         description: success
+ *       400:
+ *         description: error to try register purchase
+ *       403:
+ *         description: Request denied
+ */
+router.post('/', async (req, res) => {
 
     const account_pk = req.headers['authorization'];
     const { address_pk, itens } = req.body;
@@ -44,7 +78,22 @@ router.post(prefix, async (req, res) => {
     });
 });
 
-router.get(prefix, async (req, res) => {
+/**
+ * @swagger
+ * /api/v1/purchase:
+ *   get:
+ *     tags:
+ *      - Purchase
+ *     summary: List
+ *     security:
+ *       - AccountPk: []
+ *     responses:
+ *       200:
+ *         description: success
+ *       403:
+ *         description: Request denied
+ */
+router.get('/', async (req, res) => {
 
     const account_pk = req.headers['authorization'];
 
@@ -63,7 +112,31 @@ router.get(prefix, async (req, res) => {
     });
 });
 
-router.get(prefix + '/:pk', async (req, res) => {
+/**
+ * @swagger
+ * /api/v1/purchase/{pk}:
+ *   get:
+ *     tags:
+ *      - Purchase
+ *     summary: Detail
+ *     security:
+ *       - AccountPk: []
+ *     parameters:
+ *       - in: path
+ *         name: pk
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: purchase identifier
+ *     responses:
+ *       200:
+ *         description: success
+ *       400:
+ *         description: error to try get info purchase
+ *       403:
+ *         description: Request denied
+ */
+router.get('/:pk', async (req, res) => {
 
     const purchase_pk = req.params.pk;
     const account_pk = req.headers['authorization'];

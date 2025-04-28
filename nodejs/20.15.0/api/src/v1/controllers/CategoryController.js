@@ -2,9 +2,25 @@ const express = require('express');
 const categoryRepository = require('../repositories/CategoryRepository');
 const router = express.Router();
 
-const prefix = "/api/v1/product/category";
-
-router.get(prefix, async (req, res) => {
+/**
+ * @swagger
+ * /api/v1/product/category:
+ *   get:
+ *     tags:
+ *      - Product Category
+ *     summary: List
+ *     parameters:
+ *       - in: query
+ *         name: name
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: address identifier
+ *     responses:
+ *       200:
+ *         description: success
+ */
+router.get('/', async (req, res) => {
 
     const { name } = req.query;
 
