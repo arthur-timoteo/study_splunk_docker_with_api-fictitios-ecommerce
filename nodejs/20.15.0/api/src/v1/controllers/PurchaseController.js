@@ -155,7 +155,7 @@ router.get('/:pk', async (req, res) => {
         });
     }
 
-    const purchase_itens = await purchaseItemRepository.find(null, purchase.pk, null, null, null);
+    const purchase_itens = await purchaseItemRepository.find(null, purchase[0].pk, null, null, null);
 
     res.status(200).json({ 
         message: 'success',
