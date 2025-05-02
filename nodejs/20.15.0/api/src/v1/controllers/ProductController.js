@@ -61,7 +61,13 @@ router.get('/', async (req, res) => {
 
     const { name, min_price, max_price, is_new, brand, location, specifications, count } = req.query;
 
-    const products = await productRepository.find(name, min_price, max_price, is_new, brand, location, specifications, count);
+    const specifications_list = specifications ? specifications.split(';') : null;
+    const specifications_objects_list = specifications_list ? specifications_list.map(spec => {
+        const [key, value] = spec.split(':');
+        return { key, value };
+    }) : null;
+
+    const products = await productRepository.find(name, min_price, max_price, is_new, brand, location, specifications_objects_list, count);
 
     res.status(200).json({ 
         message: 'success',
