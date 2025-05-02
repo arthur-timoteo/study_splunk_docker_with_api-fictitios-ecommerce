@@ -38,7 +38,6 @@ const router = express.Router();
  *         description: Request denied
  */
 router.post('/:pk/review', async (req, res) => {
-console.log(req);
     const product_pk = req.params.pk;
     const account_pk = req.headers['authorization'];
     const { rating, review_comment } = req.body;
